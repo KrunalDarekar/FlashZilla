@@ -28,8 +28,7 @@ struct ContentView: View {
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     var body: some View {
         ZStack {
-            Image(decorative: "background")
-                .resizable()
+            Color("bgcolor")
                 .ignoresSafeArea()
             VStack {
                 Text("Time: \(timeRemaining)")
