@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		801CB9A72DB175EC004453AA /* EditCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801CB9A62DB175EC004453AA /* EditCards.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		801CB9602DAE8FDD004453AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -31,7 +27,6 @@
 		801CB94F2DAE8FDB004453AA /* Flashzilla.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flashzilla.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		801CB95F2DAE8FDD004453AA /* FlashzillaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlashzillaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		801CB9692DAE8FDD004453AA /* FlashzillaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlashzillaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		801CB9A62DB175EC004453AA /* EditCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCards.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -80,7 +75,6 @@
 		801CB9462DAE8FDB004453AA = {
 			isa = PBXGroup;
 			children = (
-				801CB9A62DB175EC004453AA /* EditCards.swift */,
 				801CB9512DAE8FDB004453AA /* Flashzilla */,
 				801CB9622DAE8FDD004453AA /* FlashzillaTests */,
 				801CB96C2DAE8FDD004453AA /* FlashzillaUITests */,
@@ -242,7 +236,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				801CB9A72DB175EC004453AA /* EditCards.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

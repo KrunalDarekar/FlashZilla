@@ -20,15 +20,20 @@ struct ContentView: View {
     @Environment(\.accessibilityVoiceOverEnabled) var accessibilityVoiceOverEnabled
     @Environment(\.modelContext) var modelContext
     
-    @Query var allCards: [Card]
+    let cardGroup: CardGroup?
     @State private var activeCards: [Card] = []
-    @State private var showingEditScreen = false
+    @State private var showingGroupList = false
     
     @Environment(\.scenePhase) var scenePhase
     @State private var isActive = true
     
     @State private var timeRemaining = 100
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
+    init(cardGroup: CardGroup? = nil) {
+        self.cardGroup = cardGroup
+    }
+    
     var body: some View {
         ZStack {
             Color("bgcolor")
@@ -77,17 +82,17 @@ struct ContentView: View {
             VStack {
                 HStack {
                     Spacer()
-
+                    
                     Button {
-                        showingEditScreen = true
+                        showingGroupList = true
                     } label: {
-                        Image(systemName: "plus.circle")
+                        Image(systemName: "list.dash")
                             .padding()
                             .background(.black.opacity(0.7))
                             .clipShape(.circle)
                     }
                 }
-
+                
                 Spacer()
             }
             .foregroundStyle(.white)
@@ -100,39 +105,38 @@ struct ContentView: View {
                     
                     HStack {
                         Button {
-                                withAnimation {
-                                    removeCard(at: activeCards.count - 1, addBack: true)
-                                }
-                            } label: {
-                                Image(systemName: "xmark.circle")
-                                    .padding()
-                                    .background(.black.opacity(0.7))
-                                    .clipShape(.circle)
+                            withAnimation {
+                                removeCard(at: activeCards.count - 1, addBack: true)
                             }
-                            .accessibilityLabel("Wrong")
-                            .accessibilityHint("Mark your answer as being incorrect.")
-
-                            Spacer()
-
-                            Button {
-                                withAnimation {
-                                    removeCard(at: activeCards.count - 1, addBack: false)
-                                }
-                            } label: {
-                                Image(systemName: "checkmark.circle")
-                                    .padding()
-                                    .background(.black.opacity(0.7))
-                                    .clipShape(.circle)
+                        } label: {
+                            Image(systemName: "xmark.circle")
+                                .padding()
+                                .background(.black.opacity(0.7))
+                                .clipShape(.circle)
+                        }
+                        .accessibilityLabel("Wrong")
+                        .accessibilityHint("Mark your answer as being incorrect.")
+                        
+                        Spacer()
+                        
+                        Button {
+                            withAnimation {
+                                removeCard(at: activeCards.count - 1, addBack: false)
                             }
-                            .accessibilityLabel("Correct")
-                            .accessibilityHint("Mark your answer as being correct.")
+                        } label: {
+                            Image(systemName: "checkmark.circle")
+                                .padding()
+                                .background(.black.opacity(0.7))
+                                .clipShape(.circle)
+                        }
+                        .accessibilityLabel("Correct")
+                        .accessibilityHint("Mark your answer as being correct.")
                     }
                     .foregroundStyle(.white)
                     .font(.largeTitle)
                     .padding()
                 }
             }
-
         }
         .onReceive(timer) { time in
             guard isActive else { return }
@@ -151,7 +155,9 @@ struct ContentView: View {
                 isActive = false
             }
         }
-        .sheet(isPresented: $showingEditScreen, onDismiss: resetCards, content: EditCards.init)
+        .sheet(isPresented: $showingGroupList) {
+            CardGroupListView()
+        }
         .onAppear(perform: resetCards)
     }
     
@@ -168,13 +174,13 @@ struct ContentView: View {
     }
     
     func resetCards() {
-        activeCards = allCards.shuffled()
+        if let group = cardGroup {
+            activeCards = group.cards.shuffled()
+        } else {
+            activeCards = []
+        }
         timeRemaining = 100
         isActive = true
-    }
-    
-    func loadData() {
-        // No longer needed as we're using SwiftData
     }
 }
 

@@ -1,18 +1,9 @@
-//
-//  EditCards.swift
-//  Flashzilla
-//
-//  Created by krunal darekar on 17/04/25.
-//
-
 import SwiftData
 import SwiftUI
 
 struct EditCards: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(\.modelContext) var modelContext
-    // @State private var cards = [Card]()
-    @Query var cards: [Card]
+    @Binding var cards: [Card]
     @State private var newPrompt = ""
     @State private var newAnswer = ""
 
@@ -48,41 +39,18 @@ struct EditCards: View {
         dismiss()
     }
 
-//    func loadData() {
-//        if let data = UserDefaults.standard.data(forKey: "Cards") {
-//            if let decoded = try? JSONDecoder().decode([Card].self, from: data) {
-//                cards = decoded
-//            }
-//        }
-//    }
-//
-//    func saveData() {
-//        if let data = try? JSONEncoder().encode(cards) {
-//            UserDefaults.standard.set(data, forKey: "Cards")
-//        }
-//    }
-
     func addCard() {
         let trimmedPrompt = newPrompt.trimmingCharacters(in: .whitespaces)
         let trimmedAnswer = newAnswer.trimmingCharacters(in: .whitespaces)
         guard trimmedPrompt.isEmpty == false && trimmedAnswer.isEmpty == false else { return }
 
         let card = Card(prompt: trimmedPrompt, answer: trimmedAnswer)
-        modelContext.insert(card)
-        // saveData()
+        cards.append(card)
         newPrompt = ""
         newAnswer = ""
     }
 
     func removeCards(at offsets: IndexSet) {
-        for offset in offsets {
-            let card = cards[offset]
-            modelContext.delete(card)
-        }
-        // saveData()
+        cards.remove(atOffsets: offsets)
     }
-}
-
-#Preview {
-    EditCards()
-}
+} 

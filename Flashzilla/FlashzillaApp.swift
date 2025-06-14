@@ -12,8 +12,8 @@ import SwiftUI
 struct FlashzillaApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CardGroupListView()
         }
-        .modelContainer(for: Card.self)
+        .modelContainer(for: [Card.self, CardGroup.self])
     }
 }
