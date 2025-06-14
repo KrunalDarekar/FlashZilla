@@ -5,6 +5,7 @@
 //  Created by krunal darekar on 15/04/25.
 //
 
+import SwiftData
 import SwiftUI
 
 extension View {
@@ -17,8 +18,10 @@ extension View {
 struct ContentView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var accessibilityDifferentiateWithoutColor
     @Environment(\.accessibilityVoiceOverEnabled) var accessibilityVoiceOverEnabled
+    @Environment(\.modelContext) var modelContext
     
-    @State private var cards = [Card]()
+    @Query var allCards: [Card]
+    @State private var activeCards: [Card] = []
     @State private var showingEditScreen = false
     
     @Environment(\.scenePhase) var scenePhase
@@ -40,7 +43,7 @@ struct ContentView: View {
                     .clipShape(.capsule)
                 
                 ZStack {
-                    ForEach(Array(cards.enumerated()), id: \.element.id) { (index, card) in
+                    ForEach(Array(activeCards.enumerated()), id: \.element.id) { (index, card) in
                         CardView(
                             card: card,
                             addBack: {
@@ -54,14 +57,14 @@ struct ContentView: View {
                                 }
                             }
                         )
-                        .stacked(at: index, in: cards.count)
-                        .allowsHitTesting(index == cards.count - 1)
-                        .accessibilityHidden(index < cards.count - 1)
+                        .stacked(at: index, in: activeCards.count)
+                        .allowsHitTesting(index == activeCards.count - 1)
+                        .accessibilityHidden(index < activeCards.count - 1)
                     }
                 }
                 .allowsHitTesting(timeRemaining > 0)
                 
-                if cards.isEmpty || timeRemaining == 0 {
+                if activeCards.isEmpty || timeRemaining == 0 {
                     Button("Start Again", action: resetCards)
                         .padding()
                         .background(.white)
@@ -98,7 +101,7 @@ struct ContentView: View {
                     HStack {
                         Button {
                                 withAnimation {
-                                    removeCard(at: cards.count - 1, addBack: true)
+                                    removeCard(at: activeCards.count - 1, addBack: true)
                                 }
                             } label: {
                                 Image(systemName: "xmark.circle")
@@ -113,7 +116,7 @@ struct ContentView: View {
 
                             Button {
                                 withAnimation {
-                                    removeCard(at: cards.count - 1, addBack: false)
+                                    removeCard(at: activeCards.count - 1, addBack: false)
                                 }
                             } label: {
                                 Image(systemName: "checkmark.circle")
@@ -139,7 +142,7 @@ struct ContentView: View {
         }
         .onChange(of: scenePhase) {
             if scenePhase == .active {
-                if cards.isEmpty {
+                if activeCards.isEmpty {
                     isActive = false
                 } else {
                     isActive = true
@@ -154,28 +157,24 @@ struct ContentView: View {
     
     func removeCard(at index: Int, addBack: Bool) {
         guard index >= 0 else { return }
-        let card = cards[index]
-        cards.remove(at: index)
+        let card = activeCards[index]
+        activeCards.remove(at: index)
         if(addBack) {
-            cards.insert(card, at: 0)
+            activeCards.insert(card, at: 0)
         }
-        if cards.isEmpty {
+        if activeCards.isEmpty {
             isActive = false
         }
     }
     
     func resetCards() {
-        loadData()
+        activeCards = allCards.shuffled()
         timeRemaining = 100
         isActive = true
     }
     
     func loadData() {
-        if let data = UserDefaults.standard.data(forKey: "Cards") {
-            if let decoded = try? JSONDecoder().decode([Card].self, from: data) {
-                cards = decoded
-            }
-        }
+        // No longer needed as we're using SwiftData
     }
 }
 

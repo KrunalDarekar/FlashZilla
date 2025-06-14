@@ -6,11 +6,18 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Card: Codable, Identifiable {
+@Model
+class Card {
     var id = UUID()
     var prompt: String
     var answer: String
-
-    static let example = Card(prompt: "Who played the 13th Doctor in Doctor Who?", answer: "Jodie Whittaker")
+    
+    init(id: UUID = UUID(), prompt: String, answer: String) {
+        self.id = id
+        self.prompt = prompt
+        self.answer = answer
+    }
+    // static let example = Card(prompt: "Who played the 13th Doctor in Doctor Who?", answer: "Jodie Whittaker")
 }

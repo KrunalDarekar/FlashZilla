@@ -88,5 +88,5 @@ struct CardView: View {
 }
 
 #Preview {
-    CardView(card: .example)
+    // CardView(card: .example)
 }
