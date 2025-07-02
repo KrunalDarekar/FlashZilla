@@ -79,25 +79,25 @@ struct ContentView: View {
                 }
             }
             
-            VStack {
-                HStack {
-                    Spacer()
-                    
-                    Button {
-                        showingGroupList = true
-                    } label: {
-                        Image(systemName: "list.dash")
-                            .padding()
-                            .background(.black.opacity(0.7))
-                            .clipShape(.circle)
-                    }
-                }
-                
-                Spacer()
-            }
-            .foregroundStyle(.white)
-            .font(.largeTitle)
-            .padding()
+//            VStack {
+//                HStack {
+//                    Spacer()
+//                    
+//                    Button {
+//                        showingGroupList = true
+//                    } label: {
+//                        Image(systemName: "list.dash")
+//                            .padding()
+//                            .background(.black.opacity(0.7))
+//                            .clipShape(.circle)
+//                    }
+//                }
+//                
+//                Spacer()
+//            }
+//            .foregroundStyle(.white)
+//            .font(.largeTitle)
+//            .padding()
             
             if accessibilityDifferentiateWithoutColor || accessibilityVoiceOverEnabled {
                 VStack {
